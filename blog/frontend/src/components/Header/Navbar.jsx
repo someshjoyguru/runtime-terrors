@@ -69,9 +69,9 @@ const Navbar = () => {
           <nav className="hidden md:block">
             <ul className="flex">
               {[
-                { name: 'HOME', path: '/blogs', active: true },
+                { name: 'HOME', path: '/', active: true },
                 { name: 'SERVICES', path: '/services', active: false },
-                { name: 'BLOGS', path: '/', active: false },
+                { name: 'BLOGS', path: '/blogs', active: false },
                 { name: 'CONTACT', path: '/contact', active: false },
                 { name: 'ABOUT', path: '/about', active: false }
               ].map((item, index) => (

@@ -14,6 +14,10 @@ import EditBlog from "./pages/EditBlog";
 import Blog from "./pages/Blog";
 import Search from "./pages/Search";
 import Category from "./pages/Category";
+import Landing from "./pages/Landing";
+import Services from "./pages/Services";
+import Contact from "./pages/Contact";
+import About from "./pages/About";
 
 const App = () => {
   return (
@@ -21,8 +25,13 @@ const App = () => {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
+          {/* <Route path="/" element={<Home />} /> */}
+          <Route path="/" element={<Landing />} />
+          <Route path="/blogs" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/register" element={<Register />} />
           <Route path="/search" element={<Search />} />
           <Route path="/write" element={<Write />} />
