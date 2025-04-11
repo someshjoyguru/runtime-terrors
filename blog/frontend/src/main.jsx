@@ -9,7 +9,6 @@ import { PostProvider } from "./context/postContext";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <AuthProvider>
         <UserProvider>
           <PostProvider>
@@ -17,6 +16,5 @@ createRoot(document.getElementById("root")).render(
           </PostProvider>
         </UserProvider>
       </AuthProvider>
-    </ThemeProvider>
   </StrictMode>
 );

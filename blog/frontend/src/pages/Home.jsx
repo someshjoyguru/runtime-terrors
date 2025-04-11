@@ -5,7 +5,6 @@ import { usePost } from "@/context/postContext";
 import { formatDate } from "@/utils/dataUtil";
 import { getNameInitials } from "@/utils/stringUtil";
 import { Link } from "react-router-dom";
-
 const Home = () => {
   const { posts, fetchPosts, loading } = usePost();
   const [page, setPage] = useState(1);
@@ -38,6 +37,9 @@ const Home = () => {
             <h1 className="text-xl font-medium text-gray-900 dark:text-white mb-7 md:mb-5 border-b pb-4">
               Recent Blogs
             </h1>
+            <h1 className="text-xl font-medium text-gray-900 dark:text-white mb-7 md:mb-5 border-b pb-4">
+               <input type="checkbox" name="" id="" />&nbsp;&nbsp;&nbsp;&nbsp;Language Independency
+            </h1>
             {loading && page === 1
               ? Array(5)
                   .fill(0)
@@ -67,15 +69,15 @@ const Home = () => {
                       <div className="flex items-center space-x-3 mb-3">
                         <Avatar className="size-6">
                           <AvatarImage
-                            src={post.author.profilePicture}
+                            src={post.author?.profilePicture}
                             className="object-cover w-full h-full"
                           />
                           <AvatarFallback>
-                            {getNameInitials(post.author.name)}
+                            {getNameInitials(post.author?.name)}
                           </AvatarFallback>
                         </Avatar>
                         <p className="text-sm text-gray-500 dark:text-gray-300">
-                          {post.author.name} • {formatDate(post?.createdAt)}
+                          {post.author?.name} • {formatDate(post?.createdAt)}
                         </p>
                       </div>
                       <Link
