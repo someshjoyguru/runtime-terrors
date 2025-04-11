@@ -3,7 +3,7 @@ import axios from "axios";
 import Layout from "./../components/Layout";
 import { Row, message } from "antd";
 import DoctorList from "../components/DoctorList";
-// import MentalHealthForm from "../pages/MentalHealthForm";
+import MentalHealthForm from "../pages/MentalHealthForm";
 
 const HomePage = () => {
   const [doctors, setDoctors] = useState([]);
@@ -153,7 +153,7 @@ const HomePage = () => {
         </div>
       )}
       
-      {/* <MentalHealthForm /> */}
+      { <MentalHealthForm /> }
     </Layout>
   );
 };

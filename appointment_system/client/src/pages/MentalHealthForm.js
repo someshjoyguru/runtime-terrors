@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-// import './MentalHealthForm.css'; // Assuming you'll create a CSS file
+import './MentalHealthForm.css'; // Assuming you'll create a CSS file
 
 const MentalHealthForm = () => {
   const [formData, setFormData] = useState({
