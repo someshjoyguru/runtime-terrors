@@ -276,6 +276,75 @@ const userAppointmentsController = async (req, res) => {
   }
 };
 
+// Save OCR Result to User Profile
+const saveOcrResultController = async (req, res) => {
+  try {
+    const { userId, ocrResult, imageUrl } = req.body;
+    
+    // Find user by ID
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).send({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Create a new OCR result entry with timestamp
+    const newOcrEntry = {
+      data: ocrResult,
+      imageUrl: imageUrl,
+      timestamp: new Date(),
+    };
+
+    // Add to user's ocrResults array
+    user.ocrResults.push(newOcrEntry);
+    await user.save();
+
+    res.status(200).send({
+      success: true,
+      message: "OCR result saved to user profile",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error saving OCR result",
+    });
+  }
+};
+
+// Add this function to your userCtrl.js file
+
+const getUserInfoController = async (req, res) => {
+  try {
+    const user = await userModel.findById(req.body.userId);
+    if (!user) {
+      return res.status(404).send({
+        message: "User not found",
+        success: false,
+      });
+    }
+    
+    // Remove sensitive information
+    user.password = undefined;
+    
+    res.status(200).send({
+      success: true,
+      message: "User data fetched successfully",
+      data: user,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error in fetching user data",
+    });
+  }
+};
+
 module.exports = {
   loginController,
   registerController,
@@ -287,4 +356,6 @@ module.exports = {
   bookeAppointmnetController,
   bookingAvailabilityController,
   userAppointmentsController,
+  saveOcrResultController,  // Add this line
+  getUserInfoController,
 };

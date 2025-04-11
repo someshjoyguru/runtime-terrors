@@ -10,6 +10,8 @@ const {
   bookeAppointmnetController,
   bookingAvailabilityController,
   userAppointmentsController,
+  saveOcrResultController,
+  getUserInfoController,
 } = require("../controllers/userCtrl");
 const authMiddleware = require("../middlewares/authMiddleware");
 
@@ -57,5 +59,9 @@ router.post(
 
 //Appointments List
 router.get("/user-appointments", authMiddleware, userAppointmentsController);
+router.get("/getUserInfo", authMiddleware, getUserInfoController);
+
+// Add this route to your userRoutes.js file
+router.post("/save-ocr-result", authMiddleware, saveOcrResultController);
 
 module.exports = router;

@@ -42,7 +42,10 @@ const userSchema = new mongoose.Schema({
       message: 'Each record must be a string ending with .pdf, .jpg, or .png',
     },
   },
-
+  ocrResults: {
+    type: Array,
+    default: [],
+  }
 });
 
 const userModel = mongoose.model("users", userSchema);
