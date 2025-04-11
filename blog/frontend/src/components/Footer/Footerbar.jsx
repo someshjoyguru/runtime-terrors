@@ -78,13 +78,16 @@ const Footerbar = () => {
             <h2 className="text-xl font-bold">Contact Us</h2>
             <ul className="py-2" onClick={ScrollToTop}>
               <li className="py-1">
-                RuralCare-Help@support.com
+                support@ruralcare.com
               </li>
               <li className="py-1">
-                RuralCare_appointment.com
+                info@ruralcare.com
               </li>
               <li className="py-1">
-                0657-2310156
+                +91 1234567890
+              </li>
+              <li className="py-1">
+                +91 9876543210
               </li>
             </ul>
           </div>
