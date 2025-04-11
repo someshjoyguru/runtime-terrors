@@ -105,55 +105,127 @@ const HomePage = () => {
 
   return (
     <Layout>
-      <h1 className="text-center">Home Page</h1>
-      <Row>
-        {doctors && doctors.map((doctor) => <DoctorList doctor={doctor} key={doctor._id} />)}
-      </Row>
-      
-      {/* Image Upload Section */}
-      <div className="mt-8 mb-6">
-        <h3 className="text-xl font-semibold mb-4">Upload Image for Processing</h3>
-        <div
-          className={`border-2 border-dashed rounded-lg p-6 ${imageFile ? 'border-blue-400 bg-blue-50' : 'border-gray-300 hover:border-blue-400'} text-center cursor-pointer`}
-          onDragOver={(e) => e.preventDefault()}
-          onDrop={(e) => {
-            e.preventDefault();
-            const file = e.dataTransfer.files[0];
-            handleImageUpload(file);
-          }}
-          onClick={() => document.getElementById('image-upload').click()}
-        >
-          {isExtracting ? (
-            <p className="text-blue-600 font-medium">Extracting image info...</p>
-          ) : imageFile ? (
-            <>
-              <img
-                src={URL.createObjectURL(imageFile)}
-                alt="Uploaded"
-                className="max-h-40 mx-auto mb-4 rounded"
-              />
-              <p className="text-sm text-gray-600">Click or drag to change image</p>
-            </>
-          ) : (
-            <p className="text-sm text-gray-600">Click or drag to upload an image</p>
-          )}
-        </div>
-        <input
-          type="file"
-          id="image-upload"
-          hidden
-          onChange={(e) => e.target.files[0] && handleImageUpload(e.target.files[0])}
-        />
-      </div>
+      <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white">
+        <div className="container mx-auto px-4 py-8">
+          <h1 className="text-center text-4xl font-bold text-orange-600 mb-8">
+            Healthcare Portal
+          </h1>
 
-      {ocrResult && (
-        <div className="mt-4 bg-gray-100 p-4 rounded-md text-sm text-gray-800 whitespace-pre-wrap mb-6">
-          <h3 className="text-md font-semibold mb-2">Processing Result:</h3>
-          <pre>{JSON.stringify(ocrResult, null, 2)}</pre>
+          {/* Doctors Section */}
+          <div className="mb-12">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
+              Our Healthcare Professionals
+            </h2>
+            <Row gutter={[24, 24]} className="mb-6">
+              {doctors &&
+                doctors.map((doctor) => (
+                  <DoctorList doctor={doctor} key={doctor._id} />
+                ))}
+            </Row>
+          </div>
+
+          {/* Unified Container */}
+          <div className="bg-white border border-orange-200 rounded-2xl p-8 max-w-6xl mx-auto shadow-lg">
+            <h2 className="text-2xl font-semibold text-orange-700 mb-8 text-center">
+              Mental Health Support & Document Processing
+            </h2>
+
+            <div className="grid md:grid-cols-2 gap-12">
+              {/* Improved Image Upload Section */}
+              <div className="w-full">
+                <h3 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                  <i className="fas fa-file-medical text-orange-500 mr-2"></i>
+                  Document Scanner
+                </h3>
+                <div
+                  className={`relative border-3 border-dashed rounded-xl p-8 transition-all duration-300
+                    ${
+                      imageFile
+                        ? "border-orange-400 bg-orange-50"
+                        : "border-orange-200 hover:border-orange-400"
+                    }
+                    text-center cursor-pointer group hover:shadow-xl`}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    const file = e.dataTransfer.files[0];
+                    handleImageUpload(file);
+                  }}
+                  onClick={() => document.getElementById("image-upload").click()}
+                >
+                  {!imageFile && !isExtracting && (
+                    <div className="flex flex-col items-center justify-center py-8">
+                      <i className="fas fa-cloud-upload-alt text-4xl text-orange-400 group-hover:text-orange-500 mb-4 transition-colors"></i>
+                      <p className="text-base font-medium text-gray-700 mb-2">
+                        Drag and drop or click to upload
+                      </p>
+                      <p className="text-sm text-orange-500">
+                        Supported: PNG, JPG, JPEG
+                      </p>
+                    </div>
+                  )}
+
+                  {isExtracting && (
+                    <div className="py-12">
+                      <i className="fas fa-spinner fa-spin text-3xl text-orange-500 mb-4"></i>
+                      <p className="text-orange-600 font-medium">
+                        Processing your document...
+                      </p>
+                    </div>
+                  )}
+
+                  {imageFile && !isExtracting && (
+                    <div className="flex flex-col items-center">
+                      <img
+                        src={URL.createObjectURL(imageFile)}
+                        alt="Uploaded preview"
+                        className="max-h-48 rounded-lg shadow-lg mb-4 object-contain border border-orange-100"
+                      />
+                      <p className="text-sm text-orange-700 flex items-center">
+                        <i className="fas fa-exchange-alt mr-2"></i>
+                        Click or drag to change document
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                <input
+                  type="file"
+                  id="image-upload"
+                  hidden
+                  accept="image/png, image/jpeg"
+                  onChange={(e) =>
+                    e.target.files[0] && handleImageUpload(e.target.files[0])
+                  }
+                />
+
+                {ocrResult && (
+                  <div className="mt-6 bg-orange-50 p-6 rounded-xl border border-orange-200 shadow-sm">
+                    <h4 className="font-semibold mb-3 flex items-center text-orange-700">
+                      <i className="fas fa-file-alt mr-2"></i>
+                      Scan Results
+                    </h4>
+                    <pre className="bg-white p-4 rounded-lg text-sm text-gray-700 overflow-auto max-h-64 border border-orange-100">
+                      {JSON.stringify(ocrResult, null, 2)}
+                    </pre>
+                  </div>
+                )}
+              </div>
+
+              {/* Mental Health Form Section */}
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                  <i className="fas fa-heart text-orange-500 mr-2"></i>
+                  Mental Health Assessment
+                </h3>
+                <div className="bg-orange-50 rounded-xl p-6 shadow-sm border border-orange-200">
+                  <MentalHealthForm />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      )}
-      
-      { <MentalHealthForm /> }
+      </div>
     </Layout>
   );
 };
