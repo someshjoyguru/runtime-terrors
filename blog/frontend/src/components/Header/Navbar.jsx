@@ -143,9 +143,17 @@ const Navbar = () => {
           ) : loading ? (
             <Skeleton className="h-7 w-7 md:h-9 md:w-9 rounded-full" />
           ) : (
-            <button onClick={() => navigate('/login')} className="bg-white text-orange-500 border-none py-2 px-5 rounded-lg font-bold cursor-pointer transition-all duration-300 hover:bg-gray-100 hover:-translate-y-0.5">
-              LOGIN
+            <>
+              <button onClick={() => navigate('/login')} className="bg-white text-orange-500 border-none py-2 px-5 rounded-lg font-bold cursor-pointer transition-all duration-300 hover:bg-gray-100 hover:-translate-y-0.5">
+              BLOG LOGIN
             </button>
+              <button
+                onClick={() => window.location.href = 'http://localhost:3000/login'}
+                className="bg-white text-orange-500 border-none py-2 px-5 rounded-lg font-bold cursor-pointer transition-all duration-300 hover:bg-gray-100 hover:-translate-y-0.5"
+              >
+                SYSTEM LOGIN
+              </button>
+            </>
           )}
         </div>
       </nav>
