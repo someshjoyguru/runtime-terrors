@@ -1,3 +1,4 @@
+// In your models/doctorModel.js
 const mongoose = require("mongoose");
 
 const doctorSchema = new mongoose.Schema(
@@ -30,7 +31,7 @@ const doctorSchema = new mongoose.Schema(
     },
     specialization: {
       type: String,
-      required: [true, "specialization is require"],
+      required: [true, "specialization is required"],
     },
     experience: {
       type: String,
@@ -46,8 +47,18 @@ const doctorSchema = new mongoose.Schema(
     },
     timings: {
       type: Object,
-      required: [true, "wrok timing is required"],
+      required: [true, "work timing is required"],
     },
+    // New field for document uploads
+    documents: {
+      type: Array,
+      default: [],
+      // Each document in the array will have: { name, url, publicId, type }
+    },
+    supporting_documents: {
+      type: String,
+      required: true
+    }
   },
   { timestamps: true }
 );

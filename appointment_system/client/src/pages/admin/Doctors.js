@@ -65,6 +65,26 @@ const Doctors = () => {
       dataIndex: "phone",
     },
     {
+      title: "Documents",
+      dataIndex: "supporting_documents",
+      render: (text, record) => (
+        <div>
+          {record.supporting_documents ? (
+            <a 
+              href={record.supporting_documents} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="btn btn-sm btn-info"
+            >
+              View Documents
+            </a>
+          ) : (
+            <span className="text-muted">No documents</span>
+          )}
+        </div>
+      ),
+    },
+    {
       title: "Actions",
       dataIndex: "actions",
       render: (text, record) => (

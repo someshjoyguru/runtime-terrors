@@ -101,3 +101,55 @@ export const processReq = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 }
+
+export const fileupload = async (req, res) => {
+  try {
+    // Validate file existence
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "No file uploaded"
+      });
+    }
+
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+    if (!allowedTypes.includes(req.file.mimetype)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid file type. Only JPG, JPEG and PNG allowed"
+      });
+    }
+
+    // Optimize image
+    const optimizedImage = await sharp(req.file.buffer)
+      .resize({
+        width: 800,
+        height: 800,
+        fit: "inside",
+        withoutEnlargement: true
+      })
+      .jpeg({ quality: 80 })
+      .toBuffer();
+
+    // Convert to base64
+    const base64Image = `data:${req.file.mimetype};base64,${optimizedImage.toString("base64")}`;
+
+    // Upload to Cloudinary
+    const { secure_url } = await uploadToCloudinary(base64Image);
+
+    // Return success response
+    return res.status(200).json({
+      success: true,
+      url: secure_url
+    });
+
+  } catch (error) {
+    console.error("File Upload Error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error uploading file",
+      error: error.message
+    });
+  }
+};
