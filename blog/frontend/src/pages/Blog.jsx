@@ -64,17 +64,17 @@ const Blog = () => {
             <div className="flex items-center gap-4">
               <Avatar className="size-7 md:size-12">
                 <AvatarImage
-                  src={post?.author.profilePicture}
+                  src={post?.author?.profilePicture}
                   className="object-cover w-full h-full"
                 />
                 <AvatarFallback>
-                  {getNameInitials(post?.author.name)}
+                  {getNameInitials(post?.author?.name)}
                 </AvatarFallback>
               </Avatar>
 
               <span className="text-sm">
                 <p>Published by</p>
-                <p className="text-base font-medium">{post?.author.name}</p>
+                <p className="text-base font-medium">{post?.author?.name}</p>
               </span>
             </div>
             <p className="flex items-center gap-1 text-sm text-neutral-500 dark:text-neutral-400">
@@ -127,22 +127,22 @@ const Blog = () => {
                   <div className="flex items-center gap-2">
                     <Avatar className="size-6">
                       <AvatarImage
-                        src={relatedPost.author.profilePicture}
+                        src={relatedPost?.author?.profilePicture}
                         className="object-cover w-full h-full"
                       />
                       <AvatarFallback>
-                        {getNameInitials(relatedPost.author.name)}
+                        {getNameInitials(relatedPost?.author?.name)}
                       </AvatarFallback>
                     </Avatar>
-                    <p className="text-sm">{relatedPost.author.name}</p>
+                    <p className="text-sm">{relatedPost?.author?.name}</p>
                     <span className="text-sm">
-                      {formatDate(relatedPost.createdAt)}
+                      {formatDate(relatedPost?.createdAt)}
                     </span>
                   </div>
                   <div className="inline">
-                    <Link to={`/blog/${relatedPost._id}`} onClick={ScrollToTop}>
+                    <Link to={`/blog/${relatedPost?._id}`} onClick={ScrollToTop}>
                       <h2 className="inline text-xl font-medium line-clamp-2 hover:underline hover:underline-offset-2">
-                        {relatedPost.title}
+                        {relatedPost?.title}
                       </h2>
                     </Link>
                   </div>
