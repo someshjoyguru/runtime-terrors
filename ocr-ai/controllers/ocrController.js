@@ -1,5 +1,5 @@
 import { extractTextFromImage } from '../services/ocrService.js';
-import { extractInfoFromText } from '../services/geminiService.js';
+import { extractInfoFromText, predictDepression } from '../services/geminiService.js';
 import { uploadToCloudinary } from "../utils/cloudinary.js";
 import sharp from "sharp";
 
@@ -59,34 +59,45 @@ export const processImage = async (req, res) => {
   }
 };
 
-// Keep other controller functions as they are
-export const getAllBooks = async (req, res) => {
+export const processReq = async (req, res) => {
   try {
-    const books = await Book.find();
-    res.status(200).json({ success: true, books });
-  } catch (error) {
-    console.error("❌ Error fetching books:", error);
-    res.status(500).json({ error: "Failed to fetch books" });
-  }
-};
+    console.log("📥 Incoming Body:", req.body);
 
-export const getBooksByDonor = async (req, res) => {
-  try {
-    const { donor_id } = req.params;
-
-    if (!donor_id) {
-      return res.status(400).json({ error: "Donor ID is required" });
+    const formData = req.body;
+    if (!formData) {
+      return res.status(400).json({ message: "formData is required" });
     }
 
-    const books = await Book.find({ donor_id });
+    // Data Extraction
+    let extractedData = await predictDepression(formData);
 
-    if (books.length === 0) {
-      return res.status(404).json({ message: "No books found for this donor." });
+    if (extractedData && typeof extractedData === 'string') {
+      // Clean and Parse JSON Response
+      const cleaned = extractedData
+        .replace(/```json|```/gi, '')  // Remove markdown JSON formatting
+        .trim();
+
+      try {
+        extractedData = JSON.parse(cleaned);
+      } catch (err) {
+        console.error("❌ JSON parse error:", err);
+        return res.status(500).json({ error: "Failed to parse Gemini response." });
+      }
+    } else {
+      console.warn("⚠ Gemini response was empty or malformed:", extractedData);
+      return res.status(500).json({ error: "Invalid response from Gemini service." });
     }
 
-    res.status(200).json({ success: true, books });
-  } catch (error) {
-    console.error("❌ Error fetching donor's books:", error);
-    res.status(500).json({ error: "Failed to fetch books for the donor" });
+    console.log('📄 Extracted data:', extractedData);
+    
+    // Return the extracted data directly without saving to database
+    res.json({ 
+      success: true, 
+      extractedData,
+    });
+
+  } catch (err) {
+    console.error("❌ OCR Controller Error:", err);
+    res.status(500).json({ error: err.message });
   }
-};
+}

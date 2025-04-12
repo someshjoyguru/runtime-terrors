@@ -60,6 +60,7 @@ const HomePage = () => {
       const response = await axios.post('http://localhost:8000/api/ocr/process', formData);
       setOcrResult(response.data);
       
+      
       // Save OCR result to user profile if we have userId and successful OCR result
       if (userId && response.data && response.data.success) {
         await saveOcrToUserProfile(response.data);

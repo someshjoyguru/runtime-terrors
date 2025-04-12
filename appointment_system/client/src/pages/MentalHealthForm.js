@@ -34,7 +34,7 @@ const MentalHealthForm = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://127.0.0.1:5000/predict', {
+      const response = await fetch('http://localhost:8000/api/ocr/depression', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -43,7 +43,8 @@ const MentalHealthForm = () => {
       });
 
       const data = await response.json();
-      setPrediction(data.prediction);
+      console.log('Response from server:', data);
+      setPrediction(data);
     } catch (error) {
       console.error('Error during prediction:', error);
       setPrediction('Error occurred during prediction');
@@ -274,15 +275,48 @@ const MentalHealthForm = () => {
       </form>
 
       {prediction && (
-        <div className="prediction-result">
-          <h2>Assessment Result</h2>
-          <div className="result-box">
-            <p>Based on your inputs, our model indicates:</p>
-            <p className="prediction">{prediction}</p>
-            <p className="disclaimer">
-              Note: This is not a clinical diagnosis. Please consult with a healthcare professional 
-              for proper evaluation and support.
-            </p>
+        <div className="mt-8 p-6 bg-white rounded-lg shadow-md border border-orange-100">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Assessment Result</h2>
+          <div className="space-y-6">
+            <div className="flex items-center space-x-3">
+              <div className={`w-3 h-3 rounded-full ${prediction.extractedData.depression ? 'bg-red-500' : 'bg-green-500'}`}></div>
+              <p className="text-lg font-medium">
+                Depression Risk Level: {prediction.extractedData.depression ? 'High' : 'Low'}
+              </p>
+            </div>
+
+            {/* Remedies Section */}
+            <div className="mt-6">
+              <h3 className="text-xl font-medium text-gray-700 mb-3">Recommended Actions</h3>
+              <ul className="list-none space-y-2">
+                {prediction.extractedData.remedies.map((remedy, index) => (
+                  <li key={index} className="flex items-start space-x-2">
+                    <i className="fas fa-check-circle text-green-500 mt-1"></i>
+                    <span className="text-gray-600">  {remedy}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Habits Section */}
+            <div className="mt-6">
+              <h3 className="text-xl font-medium text-gray-700 mb-3">Healthy Habits to Maintain</h3>
+              <ul className="list-none space-y-2">
+                {prediction.extractedData.habits.map((habit, index) => (
+                  <li key={index} className="flex items-start space-x-2">
+                    <i className="fas fa-star text-orange-400 mt-1"></i>
+                    <span className="text-gray-600">  {habit}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mt-6 p-4 bg-orange-50 rounded-lg border border-orange-200">
+              <p className="text-sm text-gray-600 italic">
+                Note: This is not a clinical diagnosis. Please consult with a healthcare professional 
+                for proper evaluation and support.
+              </p>
+            </div>
           </div>
         </div>
       )}

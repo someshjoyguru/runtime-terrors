@@ -30,7 +30,7 @@ const Login = () => {
     }
   };
   return (
-    <div className="form-container ">
+    <div className="form-container bg-light ">
       <Form
         layout="vertical"
         onFinish={onfinishHandler}
